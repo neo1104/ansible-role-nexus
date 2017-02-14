@@ -1,0 +1,25 @@
+---
+- name: downlaod nexus bundler
+  get_url:
+    url: "{{ nexus_download_path }}"
+    dest: "{{ nexus_tmpsave_dir }}/{{ nexus_bundler_name }}"
+    owner: root
+    validate_certs: no
+
+- name: unarchive nexus bundler
+  shell: "tar -zxvf {{ nexus_bundler_name }}"
+  args:
+    chdir: "{{ nexus_tmpsave_dir }}"
+    creates: "{{ nexus_bindir_name }}"
+
+- name: move nexus install dir
+  shell: "mv {{ nexus_bindir_name }} {{ nexus_install_dir }}"
+  args:
+    chdir: "{{ nexus_tmpsave_dir }}"
+    creates: "{{nexus_install_dir}}"
+
+- name: move nexus data dir
+  shell: "mv {{ nexus_datadir_name }} {{ nexus_data_dir }}"
+  args:
+    chdir: "{{ nexus_tmpsave_dir }}"
+    creates: "{{ nexus_data_dir }}"

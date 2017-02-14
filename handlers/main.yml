@@ -1,0 +1,6 @@
+---
+# handlers file for roles/nexus
+- name: restart nexus service
+  service:
+    name: nexus
+    state: restarted

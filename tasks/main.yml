@@ -1,0 +1,8 @@
+---
+# tasks file for roles/nexus
+- name: include install.yml
+  include: install.yml
+- name: include configure.yml
+  include: configure.yml
+- name: include service.yml
+  include: service.yml

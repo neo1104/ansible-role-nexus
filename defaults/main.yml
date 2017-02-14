@@ -1,0 +1,17 @@
+---
+# defaults file for roles/nexus
+
+nexus_version: 3.2.0-01
+nexus_bundler_name: "nexus-{{ nexus_version }}-unix.tar.gz"
+nexus_bindir_name: "nexus-{{ nexus_version }}"
+nexus_datadir_name: "sonatype-work"
+nexus_download_path: "https://sonatype-download.global.ssl.fastly.net/nexus/3/{{ nexus_bundler_name }}"
+
+nexus_running_user: nexus
+
+nexus_tmpsave_dir: /tmp
+nexus_install_dir: /usr/local/nexus
+nexus_data_dir: /var/sonatype-work
+
+nexus_environment_list:
+  - { name: export NEXUS_HOME, value: "{{ nexus_install_dir }}" }

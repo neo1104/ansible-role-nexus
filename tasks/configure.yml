@@ -1,0 +1,43 @@
+---
+- name: create nexus running user
+  user:
+    name: "{{ nexus_running_user }}"
+    state: present
+
+- name: create nexus environment variable
+  lineinfile:
+    dest: /etc/profile
+    line: "{{ item.name }}={{ item.value }}"
+    regexp: '^{{ item.name }}\s*=\s*.+$'
+    state: present
+  with_items: "{{ nexus_environment_list }}"
+
+- name: create nexus server script
+  file:
+    src: "{{ nexus_install_dir }}/bin/nexus"
+    path: /etc/init.d/nexus
+    state: link
+
+#- name: chkconfig nexus server script
+
+- name: change nexus data dir owner and mode
+  file:
+    name: "{{ nexus_data_dir }}"
+    owner: "{{ nexus_running_user }}"
+    group: "{{ nexus_running_user }}"
+    recurse: yes
+    state: directory
+
+- name: configure nexus.rc
+  template:
+    src: nexus.rc.j2
+    dest: "{{ nexus_install_dir }}/bin/nexus.rc"
+    owner: root
+    mode: 0644
+
+- name: configure nexus.vmoptions
+  template:
+    src: nexus.vmoptions.j2
+    dest: "{{ nexus_install_dir }}/bin/nexus.vmoptions"
+    owner: root
+    mode: 0644
